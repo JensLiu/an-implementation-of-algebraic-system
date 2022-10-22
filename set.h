@@ -34,7 +34,7 @@ protected:
      * @param elem
      * @return
      */
-    int _findPos(const T &elem) {
+    int _findPos(const T &elem) const {
         int i;
         for (i = 0; i < _s.size(); i++) {
             if (_s[i] == elem)
@@ -92,7 +92,7 @@ public:
      * this function returns the size of the set
      * @return
      */
-    int size() {
+    int size() const {
         return _s.size();
     }
 
@@ -116,8 +116,18 @@ public:
      * @param elem
      * @return
      */
-    int findPos(const T &elem) { // Cannot use a protected method when its child overrides a virtual function, why
+    int findPos(const T &elem) const { // Cannot use a protected method when its child overrides a virtual function, why
         return _findPos(elem);
+    }
+
+    _t_set_vec getVector() const {
+        return _s;
+    }
+
+    const T &elemAt(int idx) const {
+        if (idx < 0 || idx > _s.size())
+            return T();
+        return _s.at(idx);
     }
 
 };
