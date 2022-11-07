@@ -67,12 +67,12 @@ protected:
             int y_idx = this->_codomainSet.findPos(pair.getSecond()); // O(codomain)
             a[x_idx][y_idx] = 1;
         }
-        for (int i = 0; i < this->_domainSet.size(); i++) {
-            for (int j = 0; j < this->_codomainSet.size(); j++) {
-                std::cout << a[i][j] << " ";
-            }
-            std::cout << std::endl;
-        }
+//        for (int i = 0; i < this->_domainSet.size(); i++) {
+//            for (int j = 0; j < this->_codomainSet.size(); j++) {
+//                std::cout << a[i][j] << " ";
+//            }
+//            std::cout << std::endl;
+//        }
         return a;
     }
 
