@@ -5,6 +5,7 @@
 #ifndef INC_ALGBRAIC_SYSTEM_ALGEBRAIC_SYSTEM_WITH_SINGLE_BINARY_OPERATION_H
 #define INC_ALGBRAIC_SYSTEM_ALGEBRAIC_SYSTEM_WITH_SINGLE_BINARY_OPERATION_H
 
+#include <iostream>
 #include "set.h"
 #include "triple.h"
 template<typename SType>
@@ -264,7 +265,7 @@ public:
 
 
     friend std::ostream &operator<<(std::ostream &os, const _t_self &obj) {
-        os << "algebraic system on set " << obj._s << endl;
+        os << "algebraic system on set " << obj._s << std::endl;
         int size = obj._s.size();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -275,7 +276,7 @@ public:
                     os << obj._s.elemAt(z) << " ";
                 }
             }
-            os << endl;
+            os << std::endl;
         }
         return os;
     }
