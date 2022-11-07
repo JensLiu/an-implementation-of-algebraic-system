@@ -17,29 +17,55 @@ using std::memcpy;
 void testSet();
 void testBinaryRelation();
 void testFunction();
-void lab1Check();
+void functionCheck();
 void testOperation();
 void groupCheck();
 
 int main() {
+    functionCheck();
+}
 
-//    groupCheck();
-//    testOperation();
+void functionCheck() {
+    cout << "*** Function Check ***" << endl;
+    cout << "input the domain\tusage: {x1,x2, ... xn}" << endl;
+    cout << "Domain = ";
+    string input;
+    cin >> input;
+    Set<int> domain = parseToIntSet(input.c_str());
+    cout << "Domain = " << domain << endl << endl;
 
-    string s = "{,<123,-1>,<123,-1>,}";
-    Set<OrderedPair<int, int>> set = parseToIntPairSet(s.c_str());
-    cout << set;
+    cout << "input the codomain\tusage: {x1,x2, ... xn}" << endl;
+    cout << "Codomain = ";
+    cin >> input;
+    Set<int> codomain = parseToIntSet(input.c_str());
+    cout << "Codomain = " << codomain << endl << endl;
 
-//    cout << parseToIntPair("<1,1>");
-//    testSet();
-//    testFunction();
-//    testBinaryRelation();
-//    testFunction();
-//    lab1Check();
-//    BinaryFunction<char, char> b(_s, _s);
-//    cout << b.insert(OrderedPair<char, char>('a', 'a')) << endl;
-//    cout << b.insert(OrderedPair<char, char>('a', 'a')) << endl;
-//    cout << b.insert(OrderedPair<char, char>('a', 'b')) << endl;
+    cout << "input the relation on\ndomain: " << domain << "\ncodomain: " << codomain << "\n"
+            "usage: {<x1,y1>,<x2,y2>, ... <xn,xn>}" << endl;
+    cout << "relation = ";
+    cin >> input;
+    Set<OrderedPair<int, int>> pairSet = parseToIntPairSet(input.c_str());
+    BinaryRelation<int, int> relation(domain, codomain);
+    for (auto p : pairSet.getElements()) {
+        relation.insert(p);
+    }
+    cout << "relation: " << endl << relation << endl;
+    BinaryFunction<int, int> function(relation);
+    if (function.isFunction()) {
+        cout << "is a function" << endl;
+        int isInjective = function.isInjective();
+        int isSurjective = function.isSurjective();
+        if (isInjective && isSurjective) {
+            cout << "is bijective" << endl;
+        } else if (isInjective) {
+            cout << "is injective, not surjective" << endl;
+        } else if (isSurjective){
+            cout << "is surjective, not injective" << endl;
+        }
+    } else {
+        cout << "is not a function" << endl;
+    }
+
 }
 
 void groupCheck() {
@@ -86,25 +112,6 @@ void groupCheck() {
         }
 
     }
-
-
-
-}
-
-void lab1Check() {
-
-    cout << "input the domain\tusage: {x1,x2, ... xn}" << endl;
-    cout << "Domain = ";
-    string input;
-    cin >> input;
-    Set<int> domain = parseToIntSet(input.c_str());
-    cout << "Domain = " << domain << endl << endl;
-
-    cout << "input the codomain\tusage: {x1,x2, ... xn}" << endl;
-    cout << "Codomain = ";
-    cin >> input;
-    Set<int> codomain = parseToIntSet(input.c_str());
-    cout << "Codomain = " << codomain << endl << endl;
 
 
 
