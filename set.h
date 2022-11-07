@@ -105,7 +105,6 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const Set<T> &obj) {
         for (int i = 0; i < obj._s.size(); i++)
             os << obj._s[i] << " ";
-
         return os;
     }
 
@@ -128,6 +127,10 @@ public:
         if (idx < 0 || idx > _s.size())
             return T();
         return _s.at(idx);
+    }
+
+    std::vector<T> getElements() const {
+        return _s;
     }
 
 };
