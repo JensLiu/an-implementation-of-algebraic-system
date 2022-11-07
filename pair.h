@@ -15,10 +15,12 @@ protected:
     Second _second;
 
 public:
+
     OrderedPair(const First &a, const Second &b) {
         this->_first = a;
         this->_second = b;
     }
+
 
     const First& getFirst() const {
         return this->_first;
@@ -34,6 +36,10 @@ public:
     }
 
     bool operator==(_t_ord_pair another) {
+        return this->_first == another.getFirst() && this->_second == another.getSecond();
+    }
+
+    bool operator==(_t_ord_pair another) const {
         return this->_first == another.getFirst() && this->_second == another.getSecond();
     }
 

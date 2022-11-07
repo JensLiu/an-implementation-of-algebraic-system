@@ -25,7 +25,7 @@ Set<int> parseToIntSet(const char * input) {
 
     int i = 0;
     // find the start of the ordered pair
-    while (input[i] != '<' && input[i] != '\0')
+    while (input[i] != '{' && input[i] != '\0')
         i++;
     if (input[i] == '\0')
         return s;
@@ -34,7 +34,7 @@ Set<int> parseToIntSet(const char * input) {
     while (input[i] != '\0') {
         int j = i;
         // find j that is the index of the first ','
-        while (input[j] != ',' && input[j] != '>' && input[j] != '\0')
+        while (input[j] != ',' && input[j] != '}' && input[j] != '\0')
             j++;
         if (input[j] == '\0')
             return s;
@@ -63,7 +63,7 @@ Set<int> parseToIntSet(const char * input) {
             }
         }
 
-        if (input[j+1] == '>')
+        if (input[j+1] == '}')
             break;
 
         // end parsing ---------------------------------------------------------------------
@@ -76,45 +76,6 @@ Set<int> parseToIntSet(const char * input) {
     }
     return s;
 }
-
-Set<OrderedPair<int, int>> parseToIntPairSet(const char *input) {
-    char buf[BUFSIZE];
-    Set<OrderedPair<int, int>> s;
-
-    int i = 0;
-    // find the start of the ordered pair
-    while (input[i] != '<' && input[i] != '\0')
-        i++;
-    if (input[i] == '\0')
-        return s;
-    i++; // now i is the start of the first pair
-
-    while (input[i] != '\0') {
-        int j = i;
-
-        // find j that is the index of the first ','
-        while (input[j] != '<' && input[j] != '>' && input[j] != '\0')
-            j++;
-        if (input[j] == '\0')
-            return s;
-        j--; // now j in the end of the number
-
-        if (j-i+1 > BUFSIZE)
-            cout << "[BUFFER ERROR]: too big" << endl;
-
-        memcpy(buf, &input[i], j-i+1);
-        buf[j-i+1] = '\0';
-
-
-        i = j + 2;
-
-        // skip spaces
-        while (input[i] == ' ')
-            i++;
-    }
-    return s;
-}
-
 
 /**
  * this function parses "<x, y>" string into an pair
@@ -179,6 +140,52 @@ OrderedPair<int, int> parseToIntPair(const char *s) {
     }
     cout << "wrong";
     return p;
+}
+
+Set<OrderedPair<int, int>> parseToIntPairSet(const char *input) {
+    char buf[BUFSIZE];
+    Set<OrderedPair<int, int>> s;
+
+    int i = 0;
+    // find the start of the ordered pair
+    while (input[i] != '{' && input[i] != '\0')
+        i++;
+    if (input[i] == '\0')
+        return s;
+    i++; // now i is the start of the first pair
+
+    while (input[i] != '\0') {
+        int j = i;
+        while (input[i] != '<' && input[i] != '\0')
+            i++;
+
+        // find j that is the index of the first ','
+//        while (input[j] != '{' && input[j] != '}' && input[j] != '\0')
+        while (input[j] != '>' && input[j] != '\0')
+            j++;
+        if (input[j] == '\0')
+            return s;
+//        j--; // now j in the end of the pair
+        // now j in the end of the pair
+
+        if (j-i+1 > BUFSIZE)
+            cout << "[BUFFER ERROR]: too big" << endl;
+
+        memcpy(buf, &input[i], j-i+1);
+        buf[j-i+1] = '\0';
+
+        OrderedPair<int, int> pair = parseToIntPair(buf);
+        if (pair.getFirst() != INT32_MAX-1 && pair.getSecond() != INT32_MAX-1) {
+            s.insert(pair);
+        }
+
+        i = j + 2;
+
+        // skip spaces
+        while (input[i] == ' ')
+            i++;
+    }
+    return s;
 }
 
 #endif //INC_ALGEBRAIC_SYSTEM_INPUTPARSE_H

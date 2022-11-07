@@ -109,7 +109,7 @@ public:
      * @param codomainSet
      */
     BinaryFunction(const _t_dom_set &domainSet, const _t_cod_set &codomainSet)
-        : _t_bin_rel(domainSet, codomainSet) { // initialise its parent binary relation
+            : _t_bin_rel(domainSet, codomainSet) { // initialise its parent binary relation
 
     }
 

@@ -1,9 +1,12 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include "function.h"
+#include "binary-function.h"
 #include "pair.h"
+#include "triple.h"
 #include "input-parse.h"
+//#include "binary-operation.h"
+#include "algebraic-system-with-single-binary-operation.h"
 
 using std::cout;
 using std::endl;
@@ -15,35 +18,96 @@ void testSet();
 void testBinaryRelation();
 void testFunction();
 void lab1Check();
+void testOperation();
+void groupCheck();
 
 int main() {
-    cout << parseToIntPair("<1,1>");
+
+//    groupCheck();
+//    testOperation();
+
+    string s = "{,<123,-1>,<123,-1>,}";
+    Set<OrderedPair<int, int>> set = parseToIntPairSet(s.c_str());
+    cout << set;
+
+//    cout << parseToIntPair("<1,1>");
 //    testSet();
+//    testFunction();
 //    testBinaryRelation();
 //    testFunction();
 //    lab1Check();
-//    Function<char, char> b(_s, _s);
+//    BinaryFunction<char, char> b(_s, _s);
 //    cout << b.insert(OrderedPair<char, char>('a', 'a')) << endl;
 //    cout << b.insert(OrderedPair<char, char>('a', 'a')) << endl;
 //    cout << b.insert(OrderedPair<char, char>('a', 'b')) << endl;
 }
 
-void lab1Check() {
-//    const int BUFSIZE = 1000;
-//    char buf[BUFSIZE];
+void groupCheck() {
+    cout << "*** Group Check ***" << endl;
+    cout << "set: [usage: {x1, x2, ..., }]" << endl;
+    string input;
+    cin >> input;
+    Set<int> s = parseToIntSet(input.c_str());
 
-    cout << "input the domain\tusage: <x1,x2, ... xn>" << endl;
+
+    AlgebraicSystem<int> as(s);
+    cout << "define algebraic system on set " << s << endl;
+    std::vector<int> v = s.getVector();
+    for (int x : v) {
+        for (int y : v) {
+            cout << "<" << x << ", " << y << ">: ";
+            int z;
+            cin >> z;
+            as.alter(Triple<int, int, int>(x, y, z));
+        }
+    }
+    cout << endl << as << endl;
+
+    if (!as.isClosed()) {
+        cout << "not closed" << endl;
+    } else {
+        cout << "closed" << endl;
+        if (!as.isSemigroup()) {
+            cout << "is not semigroup" << endl;
+        } else {
+            cout << "is semigroup" << endl;
+            if (!as.isMonoid())  {
+                cout << "is not monoid" << endl;
+            } else {
+                int identity;
+                as.identityElement(identity);
+                cout << "is monoid, identity element " << identity << endl;
+                if (!as.isGroup()) {
+                    cout << "is not group" << endl;
+                } else {
+                    cout << "is group" << endl;
+                }
+            }
+        }
+
+    }
+
+
+
+}
+
+void lab1Check() {
+
+    cout << "input the domain\tusage: {x1,x2, ... xn}" << endl;
     cout << "Domain = ";
     string input;
     cin >> input;
     Set<int> domain = parseToIntSet(input.c_str());
     cout << "Domain = " << domain << endl << endl;
 
-    cout << "input the codomain\tusage: <x1,x2, ... xn>" << endl;
+    cout << "input the codomain\tusage: {x1,x2, ... xn}" << endl;
     cout << "Codomain = ";
     cin >> input;
     Set<int> codomain = parseToIntSet(input.c_str());
     cout << "Codomain = " << codomain << endl << endl;
+
+
+
 }
 
 void testSet() {
@@ -92,13 +156,19 @@ void testFunction() {
     codomain.insert('g');
     codomain.insert('h');
 
-    Function<char, char> function(domain, codomain);
-    function.insert(OrderedPair<char, char>('a', 'f'));
-    function.insert(OrderedPair<char, char>('b', 'f'));
-    function.insert(OrderedPair<char, char>('c', 'g'));
-    function.insert(OrderedPair<char, char>('d', 'h'));
-    cout << function << endl;
-    cout << function.isInjective();
+    BinaryRelation<char, char> relation(domain, codomain);
+    relation.insert(OrderedPair<char, char>('a', 'f'));
+    relation.insert(OrderedPair<char, char>('b', 'f'));
+    relation.insert(OrderedPair<char, char>('c', 'f'));
+    relation.insert(OrderedPair<char, char>('d', 'f'));
+    relation.insert(OrderedPair<char, char>('e', 'f'));
+//    relation.insert(OrderedPair<char, char>('e', 'h'));
+
+
+    cout << relation << endl;
+    BinaryFunction<char, char> function(relation);
+    cout << function;
+//    cout << function.isInjective();
 //    cout << function.insert(OrderedPair<char, char>('a', 'a')) << endl;
 //    cout << function.insert(OrderedPair<char, char>('a', 'b')) << endl;
 //    cout << function << endl;
@@ -107,4 +177,36 @@ void testFunction() {
 //    cout << function.remove(OrderedPair<char, char>('a', 'b')) << endl;
 
 
+}
+
+void testOperation() {
+    Set<char> domain;
+    domain.insert('a');
+    domain.insert('b');
+    domain.insert('c');
+
+    Set<char> codomain;
+    codomain.insert('d');
+    codomain.insert('e');
+    codomain.insert('f');
+
+    Triple<char, char, char> t11('a', 'a', 'd');
+    Triple<char, char, char> t12('a', 'b', 'e');
+    Triple<char, char, char> t13('a', 'c', 'f');
+
+    Triple<char, char, char> t21('b', 'a', 'e');
+    Triple<char, char, char> t22('b', 'b', 'd');
+    Triple<char, char, char> t23('b', 'c', 'f');
+
+    Triple<char, char, char> t31('c', 'a', 'f');
+    Triple<char, char, char> t32('c', 'b', 'e');
+    Triple<char, char, char> t33('c', 'c', 'e');
+
+//    Set<OrderedPair<char, char>> set = BinaryOperation<char, char>::getDomainCartesianProduct(domain);
+//    cout << set;
+//    BinaryOperation<char, char> binaryOperation(set, codomain);
+//    binaryOperation.insertSafely(t11);
+
+
+//    BinaryOperation<char, char, char> operation();
 }
