@@ -52,7 +52,21 @@ protected:
         return true;
     }
 
+//#define _elemCheck(var1, var2, var3) \
+//    int size = _s.size(); \
+//    for (int var1 = 0; var1 < size; var1++) { \
+//        bool flag = true; \
+//        for (int var2 = 0; var2 < size; var2++) { \
+//            if (_opMat[x*size + y] != var3) \
+//                flag = false; \
+//        } \
+//        if (flag) \
+//        return var1; \
+//    } \
+//    return -1;
+
 #define _elemCheck(var1, var2, var3) \
+    std::vector<int> elems; \
     int size = _s.size(); \
     for (int var1 = 0; var1 < size; var1++) { \
         bool flag = true; \
@@ -60,13 +74,13 @@ protected:
             if (_opMat[x*size + y] != var3) \
                 flag = false; \
         } \
-        if (flag) \
-        return var1; \
+        if (flag) elems.push_back(var1); \
     } \
-    return -1;
+    return elems;
 
-    int _leftIdentityElement() {
+    std::vector<int> _leftIdentityElement() {
         _elemCheck(x, y, y)
+//        std::vector<int> elems;
 //        int size = _s.size();
 //        for (int x = 0; x < size; x++) {
 //            bool idElem = true;
@@ -75,13 +89,14 @@ protected:
 //                    idElem = false;
 //            }
 //            if (idElem)
-//                return x;
+//                elems.push_back(x);
 //        }
-//        return -1;
+//        return elems;
     }
 
-    int _rightIdentityElement() {
+    std::vector<int> _rightIdentityElement() {
         _elemCheck(y, x, x)
+//        std::vector<int> elems;
 //        int size = _s.size();
 //        for (int y = 0; y < size; y++) {
 //            bool idElem = true;
@@ -90,14 +105,15 @@ protected:
 //                    idElem = false;
 //            }
 //            if (idElem)
-//                return y;
+//                elems.push_back(y);
 //        }
-//        return -1;
+//        return elems;
     }
 
 
-    int _leftNullElement() {
+    std::vector<int> _leftNullElement() {
         _elemCheck(x, y, x)
+//        std::vector<int> elems;
 //        int size = _s.size();
 //        for (int x = 0; x < size; x++) {
 //            bool nullElem = true;
@@ -106,13 +122,14 @@ protected:
 //                    nullElem = false;
 //            }
 //            if (nullElem)
-//                return x;
+//                elems.push_back(x);
 //        }
-//        return -1;
+//        return elems;
     }
 
-    int _rightNullElement() {
+    std::vector<int> _rightNullElement() {
         _elemCheck(x, y, y)
+//        std::vector<int> elems;
 //        int size = _s.size();
 //        for (int y = 0; y < size; y++) {
 //            bool nullElem = true;
@@ -121,48 +138,60 @@ protected:
 //                    nullElem = false;
 //            }
 //            if (nullElem)
-//                return y;
+//                elems.push_back(y);
 //        }
-//        return -1;
+//        return elems;
     }
 
-#define _bothSideElement(type) int left = _left ## type ## Element(); \
-    int right = _right ## type ## Element(); \
-    if (left != -1 && right != -1) return left; \
+#define _bothSideElement(type) std::vector<int> left = _left ## type ## Element(); \
+    std::vector<int> right = _right ## type ## Element(); \
+    if (left.size() == 1 && right.size() == 1) return left[0]; \
     return -1;
 
     int _identityElement() {
+//        std::vector<int> left = _leftIdentityElement();
+//        std::vector<int> right = _rightIdentityElement();
+//        if (left.size() == 1 && right.size() == 1)
+//            return left[0];
+//        return -1;
         _bothSideElement(Identity)
     }
 
     int _nullElement() {
+//        std::vector<int> left = _leftNullElement();
+//        std::vector<int> right = _rightNullElement();
+//        if (left.size() == 1 && right.size() == 1)
+//            return left[0];
+//        return -1;
         _bothSideElement(Null)
     }
 
 
-    int _leftInverseElement(int x, int idElem) {
+    std::vector<int> _leftInverseElement(int x, int idElem) {
+        std::vector<int> elems;
         int size = _s.size();
         for (int y = 0; y < size; y++) {
             if (_opMat[x*size + y] == idElem)
-                return y;
+                elems.push_back(y);
         }
-        return -1;
+        return elems;
     }
 
-    int _rightInverseElement(int y, int idElem) {
+    std::vector<int> _rightInverseElement(int y, int idElem) {
+        std::vector<int> elems;
         int size = _s.size();
         for (int x = 0; x < size; x++) {
             if (_opMat[x*size + y] == idElem)
-                return x;
+                elems.push_back(x);
         }
-        return -1;
+        return elems;
     }
 
     int _inverseElem(int x, int idElem) {
-        int left = _leftInverseElement(x, idElem);
-        int right = _rightInverseElement(x, idElem);
-        if (left != -1 && right != -1)
-            return left;
+        std::vector<int> left = _leftInverseElement(x, idElem);
+        std::vector<int> right = _rightInverseElement(x, idElem);
+        if (left.size() == 1 && right.size() == 1)
+            return left[0];
         return -1;
     }
 
