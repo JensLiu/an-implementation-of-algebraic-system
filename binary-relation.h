@@ -35,8 +35,8 @@ protected:
      */
     bool _valid_ord_pair(const _t_ord_pair &pair) {
         // a binary relation in on ComainSet x CodomainSet
-        std::cout << "[debug]: domain check: " << _domainSet.find(pair.getFirst()) << std::endl;
-        std::cout << "[debug]: codomain check: " << _codomainSet.find(pair.getSecond()) << std::endl;
+//        std::cout << "[debug]: domain check: " << _domainSet.find(pair.getFirst()) << std::endl;
+//        std::cout << "[debug]: codomain check: " << _codomainSet.find(pair.getSecond()) << std::endl;
         return _domainSet.find(pair.getFirst()) && _codomainSet.find(pair.getSecond());
     }
 
@@ -121,11 +121,11 @@ public:
     }
 
     friend std::ostream &operator<<(std::ostream &os, const BinaryRelation<DomainType, CodomainType> &obj) {
-        os << "doamin: " << obj._domainSet << std::endl;
-        os << "codomain: " << obj._codomainSet << std::endl;
         for (int i = 0; i < obj._s.size(); i++) {
             os << obj._s[i] << " ";
         }
+        os << "doamin: " << obj._domainSet << std::endl;
+        os << "codomain: " << obj._codomainSet << std::endl;
         return os;
     }
 
