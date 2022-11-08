@@ -204,6 +204,16 @@ protected:
         return true;
     }
 
+    std::vector<int> _idempotentElement() {
+        std::vector<int> elem;
+        int size = _s.size();
+        for (int i = 0; i < size; i++) {
+            if (_opMat[i*size + i] = i)
+                elem.push_back(i);
+        }
+        return elem;
+    }
+
 public:
     AlgebraicSystem(const Set<SType> &set) {
         _s = set;
@@ -282,6 +292,15 @@ public:
             return false;
         inverse = _s.elemAt(i);
         return true;
+    }
+
+    std::vector<int> idempotentElements() {
+        std::vector<int> ie = _idempotentElement();
+        std::vector<int> elems;
+        for (int id : ie) {
+            elems.push_back(_findIdx(id));
+        }
+        return elems;
     }
 
     bool nullElement(SType &nullElement) {
