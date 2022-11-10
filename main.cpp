@@ -17,55 +17,126 @@ using std::memcpy;
 void testSet();
 void testBinaryRelation();
 void testFunction();
-void functionCheck();
+void lab1Check();
 void testOperation();
 void groupCheck();
+void groupTest();
 
 int main() {
-    functionCheck();
+    groupTest();
+//    groupCheck();
+//    testOperation();
+
+//    string s = "{,<123,-1>,<123,-1>,}";
+//    Set<OrderedPair<int, int>> set = parseToIntPairSet(s.c_str());
+//    cout << set;
+
+//    cout << parseToIntPair("<1,1>");
+//    testSet();
+//    testFunction();
+//    testBinaryRelation();
+//    testFunction();
+//    lab1Check();
+//    BinaryFunction<char, char> b(_s, _s);
+//    cout << b.insert(OrderedPair<char, char>('a', 'a')) << endl;
+//    cout << b.insert(OrderedPair<char, char>('a', 'a')) << endl;
+//    cout << b.insert(OrderedPair<char, char>('a', 'b')) << endl;
 }
 
-void functionCheck() {
-    cout << "*** Function Check ***" << endl;
-    cout << "input the domain\tusage: {x1,x2, ... xn}" << endl;
-    cout << "Domain = ";
-    string input;
-    cin >> input;
-    Set<int> domain = parseToIntSet(input.c_str());
-    cout << "Domain = " << domain << endl << endl;
+void groupTest() {
 
-    cout << "input the codomain\tusage: {x1,x2, ... xn}" << endl;
-    cout << "Codomain = ";
-    cin >> input;
-    Set<int> codomain = parseToIntSet(input.c_str());
-    cout << "Codomain = " << codomain << endl << endl;
+    Set<int> s;
+    s.insert(0);
+    s.insert(60);
+    s.insert(120);
+    s.insert(180);
+    s.insert(240);
+    s.insert(300);
 
-    cout << "input the relation on\ndomain: " << domain << "\ncodomain: " << codomain << "\n"
-            "usage: {<x1,y1>,<x2,y2>, ... <xn,xn>}" << endl;
-    cout << "relation = ";
-    cin >> input;
-    Set<OrderedPair<int, int>> pairSet = parseToIntPairSet(input.c_str());
-    BinaryRelation<int, int> relation(domain, codomain);
-    for (auto p : pairSet.getElements()) {
-        relation.insert(p);
+    AlgebraicSystem<int> as(s);
+    using t_triple = Triple<int, int, int>;
+    as.alter(t_triple (0,0,0));
+    as.alter(t_triple (0,60,60));
+    as.alter(t_triple (0,120,120));
+    as.alter(t_triple (0,180,180));
+    as.alter(t_triple (0,240,240));
+    as.alter(t_triple (0,300,300));
+
+    as.alter(t_triple (60,0,60));
+    as.alter(t_triple (60,60,120));
+    as.alter(t_triple (60,120,180));
+    as.alter(t_triple (60,180,240));
+    as.alter(t_triple (60,240,300));
+    as.alter(t_triple (60,300,0));
+
+    as.alter(t_triple (120,0,120));
+    as.alter(t_triple (120,60,180));
+    as.alter(t_triple (120,120,240));
+    as.alter(t_triple (120,180,300));
+    as.alter(t_triple (120,240,0));
+    as.alter(t_triple (120,300,60));
+
+    as.alter(t_triple (180,0,180));
+    as.alter(t_triple (180,60,240));
+    as.alter(t_triple (180,120,300));
+    as.alter(t_triple (180,180,0));
+    as.alter(t_triple (180,240,60));
+    as.alter(t_triple (180,300,120));
+
+    as.alter(t_triple (180,0,180));
+    as.alter(t_triple (180,60,240));
+    as.alter(t_triple (180,120,300));
+    as.alter(t_triple (180,180,0));
+    as.alter(t_triple (180,240,60));
+    as.alter(t_triple (180,300,120));
+
+    as.alter(t_triple (240,0,240));
+    as.alter(t_triple (240,60,300));
+    as.alter(t_triple (240,120,0));
+    as.alter(t_triple (240,180,60));
+    as.alter(t_triple (240,240,120));
+    as.alter(t_triple (240,300,180));
+
+    as.alter(t_triple (300,0,300));
+    as.alter(t_triple (300,60,0));
+    as.alter(t_triple (300,120,60));
+    as.alter(t_triple (300,180,120));
+    as.alter(t_triple (300,240,180));
+    as.alter(t_triple (300,300,240));
+
+    cout << as << endl;
+
+    int i;
+    if (as.nullElement(i)) {
+        cout << "null " << i << endl;
     }
-    cout << "relation: " << endl << relation << endl;
-    BinaryFunction<int, int> function(relation);
-    if (function.isFunction()) {
-        cout << "is a function" << endl;
-        int isInjective = function.isInjective();
-        int isSurjective = function.isSurjective();
-        if (isInjective && isSurjective) {
-            cout << "is bijective" << endl;
-        } else if (isInjective) {
-            cout << "is injective, not surjective" << endl;
-        } else if (isSurjective){
-            cout << "is surjective, not injective" << endl;
+    if (as.identityElement(i)) {
+        cout << "identity element:" << i << endl;
+    }
+    for (auto idem : as.idempotentElements()) {
+        cout << "idempotent element:" << idem << endl;
+    }
+    for (auto elem : as.getElements()) {
+        int inverse;
+        if (as.inverseElement(elem, inverse)) {
+            cout << elem << " inverse element: " << inverse << endl;
         }
-    } else {
-        cout << "is not a function" << endl;
     }
-
+    if (as.isClosed()) {
+        cout << "closed" << endl;
+    } else {
+        cout << "not closed" << endl;
+    }
+    if (as.isAssociative()) {
+        cout << "associative" << endl;
+    } else {
+        cout << "not associative" << endl;
+    }
+    if (as.isCommutative()) {
+        cout << "commutative" << endl;
+    } else {
+        cout << "not commutative" << endl;
+    }
 }
 
 void groupCheck() {
@@ -117,15 +188,39 @@ void groupCheck() {
 
 }
 
+void lab1Check() {
+
+    cout << "input the domain\tusage: {x1,x2, ... xn}" << endl;
+    cout << "Domain = ";
+    string input;
+    cin >> input;
+    Set<int> domain = parseToIntSet(input.c_str());
+    cout << "Domain = " << domain << endl << endl;
+
+    cout << "input the codomain\tusage: {x1,x2, ... xn}" << endl;
+    cout << "Codomain = ";
+    cin >> input;
+    Set<int> codomain = parseToIntSet(input.c_str());
+    cout << "Codomain = " << codomain << endl << endl;
+
+
+
+}
+
 void testSet() {
     Set<char> s;
-    cout << s.insert('a') << endl;
-    cout << s.insert('b') << endl;
-    cout << s.insert('a') << endl;
-    cout << s.insert('b') << endl;
-    cout << s.remove('a') << endl;
-    cout << s.remove('c') << endl;
-    cout << s;
+    cout << "insert 'a' " << s.insert('a') << endl;
+    cout << s << endl;
+    cout << "insert 'b' " << s.insert('b') << endl;
+    cout << s << endl;
+    cout << "insert 'a' " << s.insert('a') << endl;
+    cout << s << endl;
+    cout << "insert 'b' " << s.insert('b') << endl;
+    cout << s << endl;
+    cout << "remove 'a' " << s.remove('a') << endl;
+    cout << s << endl;
+    cout << "remove 'c' " << s.remove('c') << endl;
+    cout << s << endl;
 }
 
 void testBinaryRelation() {
@@ -186,34 +281,34 @@ void testFunction() {
 
 }
 
-void testOperation() {
-    Set<char> domain;
-    domain.insert('a');
-    domain.insert('b');
-    domain.insert('c');
-
-    Set<char> codomain;
-    codomain.insert('d');
-    codomain.insert('e');
-    codomain.insert('f');
-
-    Triple<char, char, char> t11('a', 'a', 'd');
-    Triple<char, char, char> t12('a', 'b', 'e');
-    Triple<char, char, char> t13('a', 'c', 'f');
-
-    Triple<char, char, char> t21('b', 'a', 'e');
-    Triple<char, char, char> t22('b', 'b', 'd');
-    Triple<char, char, char> t23('b', 'c', 'f');
-
-    Triple<char, char, char> t31('c', 'a', 'f');
-    Triple<char, char, char> t32('c', 'b', 'e');
-    Triple<char, char, char> t33('c', 'c', 'e');
-
+//void testOperation() {
+//    Set<char> domain;
+//    domain.insert('a');
+//    domain.insert('b');
+//    domain.insert('c');
+//
+//    Set<char> codomain;
+//    codomain.insert('d');
+//    codomain.insert('e');
+//    codomain.insert('f');
+//
+//    Triple<char, char, char> t11('a', 'a', 'd');
+//    Triple<char, char, char> t12('a', 'b', 'e');
+//    Triple<char, char, char> t13('a', 'c', 'f');
+//
+//    Triple<char, char, char> t21('b', 'a', 'e');
+//    Triple<char, char, char> t22('b', 'b', 'd');
+//    Triple<char, char, char> t23('b', 'c', 'f');
+//
+//    Triple<char, char, char> t31('c', 'a', 'f');
+//    Triple<char, char, char> t32('c', 'b', 'e');
+//    Triple<char, char, char> t33('c', 'c', 'e');
+//
 //    Set<OrderedPair<char, char>> set = BinaryOperation<char, char>::getDomainCartesianProduct(domain);
-//    cout << set;
+////    cout << set;
 //    BinaryOperation<char, char> binaryOperation(set, codomain);
-//    binaryOperation.insertSafely(t11);
-
-
-//    BinaryOperation<char, char, char> operation();
-}
+////    binaryOperation.insertSafely(t11);
+//
+//
+////    BinaryOperation<char, char, char> operation();
+//}
