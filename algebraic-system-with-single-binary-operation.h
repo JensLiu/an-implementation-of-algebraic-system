@@ -302,6 +302,10 @@ public:
         return true;
     }
 
+    std::vector<SType> getElements() {
+        return _s.getElements();
+    }
+
 
 #define returnElements(findFunctionCall) \
     std::vector<SType> elems; \
@@ -328,11 +332,6 @@ public:
 
     std::vector<SType> rightIdentityElements() {
         returnElements(_rightIdentityElement());
-    }
-
-    SType inverseElement(const SType &given) {
-        int id = _inverseElem(_identityElement(), given);
-        return id==-1 ? -1 : _s.elemAt(id);
     }
 
     friend std::ostream &operator<<(std::ostream &os, const _t_self &obj) {
