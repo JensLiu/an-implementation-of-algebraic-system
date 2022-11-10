@@ -76,10 +76,10 @@ protected:
         } \
         if (flag) elems.push_back(var1); \
     } \
-    return elems;
+    return elems
 
     std::vector<int> _leftIdentityElement() {
-        _elemCheck(x, y, y)
+        _elemCheck(x, y, y);
 //        std::vector<int> elems;
 //        int size = _s.size();
 //        for (int x = 0; x < size; x++) {
@@ -95,7 +95,7 @@ protected:
     }
 
     std::vector<int> _rightIdentityElement() {
-        _elemCheck(y, x, x)
+        _elemCheck(y, x, x);
 //        std::vector<int> elems;
 //        int size = _s.size();
 //        for (int y = 0; y < size; y++) {
@@ -112,7 +112,7 @@ protected:
 
 
     std::vector<int> _leftNullElement() {
-        _elemCheck(x, y, x)
+        _elemCheck(x, y, x);
 //        std::vector<int> elems;
 //        int size = _s.size();
 //        for (int x = 0; x < size; x++) {
@@ -128,7 +128,7 @@ protected:
     }
 
     std::vector<int> _rightNullElement() {
-        _elemCheck(x, y, y)
+        _elemCheck(x, y, y);
 //        std::vector<int> elems;
 //        int size = _s.size();
 //        for (int y = 0; y < size; y++) {
@@ -146,7 +146,7 @@ protected:
 #define _bothSideElement(type) std::vector<int> left = _left ## type ## Element(); \
     std::vector<int> right = _right ## type ## Element(); \
     if (left.size() == 1 && right.size() == 1) return left[0]; \
-    return -1;
+    return -1
 
     int _identityElement() {
 //        std::vector<int> left = _leftIdentityElement();
@@ -154,7 +154,7 @@ protected:
 //        if (left.size() == 1 && right.size() == 1)
 //            return left[0];
 //        return -1;
-        _bothSideElement(Identity)
+        _bothSideElement(Identity);
     }
 
     int _nullElement() {
@@ -163,7 +163,7 @@ protected:
 //        if (left.size() == 1 && right.size() == 1)
 //            return left[0];
 //        return -1;
-        _bothSideElement(Null)
+        _bothSideElement(Null);
     }
 
 
@@ -208,7 +208,7 @@ protected:
         std::vector<int> elem;
         int size = _s.size();
         for (int i = 0; i < size; i++) {
-            if (_opMat[i*size + i] = i)
+            if (_opMat[i*size + i] == i)
                 elem.push_back(i);
         }
         return elem;
@@ -294,15 +294,6 @@ public:
         return true;
     }
 
-    std::vector<int> idempotentElements() {
-        std::vector<int> ie = _idempotentElement();
-        std::vector<int> elems;
-        for (int id : ie) {
-            elems.push_back(_findIdx(id));
-        }
-        return elems;
-    }
-
     bool nullElement(SType &nullElement) {
         int i = _nullElement();
         if (i == -1)
@@ -311,6 +302,38 @@ public:
         return true;
     }
 
+
+#define returnElements(findFunctionCall) \
+    std::vector<SType> elems; \
+    for (int id : findFunctionCall) {  \
+        elems.push_back(_s.elemAt(id)); \
+    }                               \
+    return elems
+
+    std::vector<SType> idempotentElements() {
+        returnElements(_idempotentElement());
+    }
+
+    std::vector<SType> leftNullElements() {
+        returnElements(_leftNullElement());
+    }
+
+    std::vector<SType> rightNullElements() {
+        returnElements(_rightNullElement());
+    }
+
+    std::vector<SType> leftIdentityElements() {
+        returnElements(_leftIdentityElement());
+    }
+
+    std::vector<SType> rightIdentityElements() {
+        returnElements(_rightIdentityElement());
+    }
+
+    SType inverseElement(const SType &given) {
+        int id = _inverseElem(_identityElement(), given);
+        return id==-1 ? -1 : _s.elemAt(id);
+    }
 
     friend std::ostream &operator<<(std::ostream &os, const _t_self &obj) {
         os << "algebraic system on set " << obj._s << std::endl;
@@ -328,8 +351,6 @@ public:
         }
         return os;
     }
-
-
 
     ~AlgebraicSystem() {
         delete[] _opMat;
